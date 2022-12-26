@@ -11,6 +11,7 @@ from tensorflow.python.keras.models import load_model
 
 class HandGestureModule(QThread):
     ImageUpdate = pyqtSignal(QImage)
+    GesturePredictionUpdate = pyqtSignal(str)
     scaled_size = QSize(490, 350)
 
     # Configure MediaPipe for Hand Gesture detection
@@ -62,11 +63,15 @@ class HandGestureModule(QThread):
                         className = self.classNames[classID]
 
                 # Show the prediction on the frame
-                cv2.putText(framergb, className, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
+                # cv2.putText(framergb, className, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
+
+                # Emit and update gesture prediction text in GUI
+                # Look at the object name: label_handGesture_prediction
+                self.GesturePredictionUpdate.emit(className)
 
                 # Convert to QtFormat
                 ConvertToQtFormat = QImage(framergb.data, framergb.shape[1], framergb.shape[0], QImage.Format_RGB888)
-                ScaledFrame = ConvertToQtFormat.scaled(self.scaled_size, Qt.IgnoreAspectRatio)
+                ScaledFrame = ConvertToQtFormat.scaled(self.scaled_size, Qt.KeepAspectRatio)
                 self.ImageUpdate.emit(ScaledFrame)
 
     def stop(self):
