@@ -58,7 +58,7 @@ class HandGestureModule(QThread):
                         self.mpDraw.draw_landmarks(framergb, handslms, self.mpHands.HAND_CONNECTIONS)
 
                         # Predict gesture
-                        prediction = self.model.predict([landmarks])
+                        prediction = self.model([landmarks])
                         classID = np.argmax(prediction)
                         className = self.classNames[classID]
 
@@ -78,8 +78,8 @@ class HandGestureModule(QThread):
         self.ThreadActive = False
         self.quit()
 
-    def scaled(self, scaled_size):
-        self.scaled_size = scaled_size
+    # def scaled(self, scaled_size):
+    #     self.scaled_size = scaled_size
 
 # class GestureStreaming(QLabel):
 #     reSize = pyqtSignal(QSize)
