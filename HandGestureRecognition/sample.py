@@ -74,16 +74,18 @@ while True:
             if len(predictionLst) > 7:
                 currentGesture = most_freq(predictionLst)
                 print("instruction received")
+                predictionLst.clear()
+
             # Carry out instruction based on hand gesture     
             if currentGesture == "peace":
                 print("peace instruction received")
-                predictionLst.clear()
+                
             if currentGesture == "thumbs up":
                 print("thumbs up instruction received")
-                predictionLst.clear()
+                
             if currentGesture == "live long":
                 print("reset instruction received")
-                predictionLst.clear()
+                comboGesture.clear()
 
     # show the prediction on the frame
     cv2.putText(frame, className, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 
