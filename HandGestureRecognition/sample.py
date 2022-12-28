@@ -2,8 +2,15 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import tensorflow as tf
+import collections
+from collections import Counter
 
 from tensorflow.python.keras.models import load_model
+
+# Approach 3 from: https://www.geeksforgeeks.org/python-find-most-frequent-element-in-a-list/
+def most_freq(lst):
+    occur_count = Counter(lst)
+    return occur_count.most_common(1)[0][0] #the element with the most frequency
 
 # Configure MediaPipe for Hand Gesture detection
 mpHands = mp.solutions.hands
@@ -20,6 +27,9 @@ f.close()
 
 # Initialize the webcam for Hand Gesture Recognition Python project
 vid = cv2.VideoCapture(0)
+# Initialize a double-ended queue to save in predictions
+predictionLst = collections.deque(maxlen=10)
+comboGesture = collections.deque(maxlen=2)
 
 while True:
     # Read each frame from the webcam
@@ -55,6 +65,25 @@ while True:
             # print(prediction)
             classID = np.argmax(prediction)
             className = classNames[classID]
+            # print(className)
+            
+            predictionLst.append(className)
+            currentGesture = ""
+
+            # Identifying the hand gesture
+            if len(predictionLst) > 7:
+                currentGesture = most_freq(predictionLst)
+                print("instruction received")
+            # Carry out instruction based on hand gesture     
+            if currentGesture == "peace":
+                print("peace instruction received")
+                predictionLst.clear()
+            if currentGesture == "thumbs up":
+                print("thumbs up instruction received")
+                predictionLst.clear()
+            if currentGesture == "live long":
+                print("reset instruction received")
+                predictionLst.clear()
 
     # show the prediction on the frame
     cv2.putText(frame, className, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 
