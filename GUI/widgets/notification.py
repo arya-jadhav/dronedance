@@ -177,9 +177,9 @@ class _NotificationDemo(QMainWindow):
 
         
 # Comment this out if you would like to try out the Notification class
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    w = _NotificationDemo()
-    w.resize(600, 330)
-    w.show()
-    sys.exit(app.exec_())
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     w = _NotificationDemo()
+#     w.resize(600, 330)
+#     w.show()
+#     sys.exit(app.exec_())

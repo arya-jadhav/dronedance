@@ -5,10 +5,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 # > SPLASH SCREEN UI
-from GUI.ui_splash_screen import Ui_SplashScreen
+from gui.ui_splash_screen import Ui_SplashScreen
 
 # > MAIN WINDOW UI
-from GUI.ui_main import Ui_MainWindow
+from gui.ui_main import Ui_MainWindow
 
 # Global Variables
 counter = 0

@@ -93,6 +93,6 @@ class Ui_SplashScreen(object):
         _translate = QtCore.QCoreApplication.translate
         SplashScreen.setWindowTitle(_translate("SplashScreen", "MainWindow"))
         self.label_title.setText(_translate("SplashScreen", "<html><head/><body><p><span style=\" font-weight:600; color:#00d1be;\">D</span><span style=\" color:#00d1be;\">rone </span><span style=\" font-weight:600; color:#00d1be;\">D</span><span style=\" color:#00d1be;\">ance</span></p></body></html>"))
-        self.label_description.setText(_translate("SplashScreen", "<html><head/><body><p><span style=\" color:#0097c5;\">Swarn Formation Based on Human Gestures</span></p></body></html>"))
+        self.label_description.setText(_translate("SplashScreen", "<html><head/><body><p><span style=\" color:#0097c5;\">Swarm Formation Based on Human Gestures</span></p></body></html>"))
         self.label_loading.setText(_translate("SplashScreen", "Loading..."))
         self.label_credits.setText(_translate("SplashScreen", "<html><head/><body><p><span style=\" font-size:9pt; font-weight:600;\">MCS7 (Summer A SEM 2022)</span></p></body></html>"))

@@ -1,0 +1,1 @@
+Leap SDK was unused because we chose to go with another alternative which was the webcam. The Leap Motion Controller was found to not be compatible with Python3 and even if we got the Leap SDK to run in Python3.10, it was still unable to detect the hardware device from our laptop.
