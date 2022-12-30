@@ -52,12 +52,13 @@ class Instruction:
             print(self.comboGesture)
             if self.comboGesture == self.combo1:
                 print("thumbs down and okay combo received")
-                self.comboGesture.clear()
+                
             elif self.comboGesture == self.combo2:
                 print("fist and stop gesture received")
-                self.comboGesture.clear()
+                
             else:
                 print("invalid combo")
-                self.comboGesture.clear()
+            
+            self.comboGesture.clear()
     
 
