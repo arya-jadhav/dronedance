@@ -2,12 +2,18 @@ import collections
 from collections import Counter
 
 class Instruction:
+    combo1 = collections.deque(["thumbs down", "okay"], maxlen=2)
+    combo2 = collections.deque(["fist", "stop"], maxlen=2)
+
     def __init__(self):
         # Initialize a double-ended queue to save in predictions
         self.predictionLst = collections.deque(maxlen=10)
         self.comboGesture = collections.deque(maxlen=2)
         self.currentGesture = ""
 
+    def current_gesture(self):
+        return self.currentGesture != ""
+    
     # Approach 3 from: https://www.geeksforgeeks.org/python-find-most-frequent-element-in-a-list/
     def most_freq(self, lst):
         occur_count = Counter(lst)
@@ -23,13 +29,35 @@ class Instruction:
         self.predictionLst.append(element)
 
     def carry_instruction(self):
-        # Carry out instruction based on hand gesture     
-        if self.currentGesture == "peace":
-            print("peace instruction received")
+        if self.current_gesture():
+            # Carry out instruction based on hand gesture     
+            if self.currentGesture == "peace":
+                print("peace instruction received")
+                
+            elif self.currentGesture == "thumbs up":
+                print("thumbs up instruction received")
+                
+            elif self.currentGesture == "live long":
+                print("reset instruction received")
+                self.comboGesture.clear()
+            else:
+                if self.currentGesture not in self.comboGesture:
+                    self.comboGesture.append(self.currentGesture)
             
-        if self.currentGesture == "thumbs up":
-            print("thumbs up instruction received")
-            
-        if self.currentGesture == "live long":
-            print("reset instruction received")
-            self.comboGesture.clear()
+            self.currentGesture = ""
+
+
+    def check_combo(self):
+        if len(self.comboGesture) == 2:
+            print(self.comboGesture)
+            if self.comboGesture == self.combo1:
+                print("thumbs down and okay combo received")
+                self.comboGesture.clear()
+            elif self.comboGesture == self.combo2:
+                print("fist and stop gesture received")
+                self.comboGesture.clear()
+            else:
+                print("invalid combo")
+                self.comboGesture.clear()
+    
+

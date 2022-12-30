@@ -64,7 +64,8 @@ while True:
             instruct.append_prediction(className)
             if instruct.identify_instruction():
                 # Carry out instruction
-                instruct.carry_instruction()          
+                instruct.carry_instruction()
+                instruct.check_combo()
 
     # show the prediction on the frame
     cv2.putText(frame, className, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 
