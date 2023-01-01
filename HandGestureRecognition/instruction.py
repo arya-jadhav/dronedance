@@ -30,19 +30,29 @@ class Instruction:
 
     def carry_instruction(self):
         if self.current_gesture():
-            # Carry out instruction based on hand gesture     
-            if self.currentGesture == "peace":
-                print("peace instruction received")
-                
-            elif self.currentGesture == "thumbs up":
-                print("thumbs up instruction received")
-                
-            elif self.currentGesture == "live long":
-                print("reset instruction received")
-                self.comboGesture.clear()
+            if not self.combo():
+                # Carry out instruction based on hand gesture     
+                if self.currentGesture == "peace":
+                    print("peace instruction received")
+                    
+                elif self.currentGesture == "thumbs up":
+                    print("thumbs up instruction received")
+                    
+                elif self.currentGesture == "live long":
+                    print("reset instruction received")
+                    self.comboGesture.clear()
+                else:
+                    if self.currentGesture not in self.comboGesture:
+                        self.comboGesture.append(self.currentGesture)
             else:
-                if self.currentGesture not in self.comboGesture:
-                    self.comboGesture.append(self.currentGesture)
+                if self.currentGesture == "peace" or self.currentGesture == "thumbs up":
+                    pass
+                elif self.currentGesture == "live long":
+                    print("reset instruction received")
+                    self.comboGesture.clear()
+                else:
+                    if self.currentGesture not in self.comboGesture:
+                        self.comboGesture.append(self.currentGesture)
             
             self.currentGesture = ""
 
@@ -60,5 +70,7 @@ class Instruction:
                 print("invalid combo")
             
             self.comboGesture.clear()
-    
+
+    def combo(self):
+        return len(self.comboGesture) > 0
 
