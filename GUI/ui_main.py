@@ -331,6 +331,7 @@ class Ui_MainWindow(object):
         self.GestureModule.start()
         self.GestureModule.ImageUpdate.connect(self.UpdateVideoCapture)
         self.GestureModule.GesturePredictionUpdate.connect(self.UpdateGesturePrediction)
+        self.GestureModule.mapper.emitter.GestureCombinationLabelUpdate.connect(self.UpdateGestureCombinationLabel)
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
@@ -346,8 +347,16 @@ class Ui_MainWindow(object):
         self.label_gestureCombo_plus.setText(_translate("MainWindow", "+"))
         self.label_prevInstructionsToDrones_title.setText(_translate("MainWindow", "Previous Instruction to Drone Swarm"))
 
-    def UpdateVideoCapture(self, Frame):
-        self.label_vidCapture.setPixmap(QtGui.QPixmap.fromImage(Frame))
+    def UpdateVideoCapture(self, frame):
+        self.label_vidCapture.setPixmap(QtGui.QPixmap.fromImage(frame))
 
     def UpdateGesturePrediction(self, prediction):
         self.label_handGesture_prediction.setText(prediction)
+
+    def UpdateGestureCombinationLabel(self, lst):
+        if lst['do_reset']:
+               self.label_gestureCombo_1.setText('')
+               self.label_gestureCombo_2.setText('')
+        else:
+               self.label_gestureCombo_1.setText(lst['gesture1'])
+               self.label_gestureCombo_2.setText(lst['gesture2'])

@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import tensorflow as tf
+from . mapper import instructioncopy as instruction
 
 from tensorflow.python.keras.models import load_model
 
@@ -26,6 +27,9 @@ class HandGestureModule(QThread):
     f = open('HandGestureRecognition\gesture.names', 'r')
     classNames = f.read().split('\n')
     f.close()
+
+    # Load Mapping Module
+    mapper = instruction.Instruction()
 
     def run(self):
         self.ThreadActive = True
@@ -74,12 +78,15 @@ class HandGestureModule(QThread):
                 ScaledFrame = ConvertToQtFormat.scaled(self.scaled_size, Qt.KeepAspectRatio)
                 self.ImageUpdate.emit(ScaledFrame)
 
+                # Update Gesture Combination and map to drone instructions
+                self.mapper.append_prediction(className)
+                if self.mapper.identify_instruction():
+                    self.mapper.carry_instruction()
+                    self.mapper.check_combo()
+
     def stop(self):
         self.ThreadActive = False
         self.quit()
-
-    # def scaled(self, scaled_size):
-    #     self.scaled_size = scaled_size
 
 # class GestureStreaming(QLabel):
 #     reSize = pyqtSignal(QSize)

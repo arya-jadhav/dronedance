@@ -1,3 +1,5 @@
+
+
 import sys
 import platform
 from PyQt5.QtGui import *
@@ -88,9 +90,6 @@ class SplashScreen(QMainWindow):
 
         # INCREASE COUNTER
         counter += 1
-
-
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
