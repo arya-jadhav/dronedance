@@ -8,7 +8,7 @@ class Instruction(QObject):
 
     # Emitter signals for GUI
     class Emitter(QObject):
-        GestureCombinationLabelUpdate = pyqtSignal(dict)
+        GestureCapturedAndInstructionToBeExecutedLabelUpdate = pyqtSignal(dict)
         def __init__(self):
             super(Instruction.Emitter, self).__init__()
 
@@ -86,12 +86,14 @@ class Instruction(QObject):
                 print("fist and stop gesture received")
             else:
                 print("invalid combo")
-                self.updateGUI(self.currentGesture, do_reset=True)
+            
+            # Reset the gestures
+            self.updateGUI(self.currentGesture, do_reset=True)
     
     def updateGUI(self, gesture_name, do_reset):
         if do_reset:
             self.gestureSignal['do_reset'] = do_reset
-            self.emitter.GestureCombinationLabelUpdate.emit(self.gestureSignal)
+            self.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.emit(self.gestureSignal)
             self.comboGesture.clear()
 
             # Update dict to intial values
@@ -105,5 +107,5 @@ class Instruction(QObject):
                 self.gestureSignal['gesture1'] = gesture_name
             else:
                 self.gestureSignal['gesture2'] = gesture_name
-            self.emitter.GestureCombinationLabelUpdate.emit(self.gestureSignal)
+            self.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.emit(self.gestureSignal)
 

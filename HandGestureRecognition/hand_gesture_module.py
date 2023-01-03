@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import tensorflow as tf
-from . mapper import instructioncopy as instruction
+from mapper import Instruction
 
 from tensorflow.python.keras.models import load_model
 
@@ -29,7 +29,7 @@ class HandGestureModule(QThread):
     f.close()
 
     # Load Mapping Module
-    mapper = instruction.Instruction()
+    mapper = Instruction()
 
     def run(self):
         self.ThreadActive = True

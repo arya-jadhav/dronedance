@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from HandGestureRecognition.hand_gesture_module import *
+from HandGestureRecognition import HandGestureModule
 
 
 class Ui_MainWindow(object):
@@ -331,7 +331,7 @@ class Ui_MainWindow(object):
         self.GestureModule.start()
         self.GestureModule.ImageUpdate.connect(self.UpdateVideoCapture)
         self.GestureModule.GesturePredictionUpdate.connect(self.UpdateGesturePrediction)
-        self.GestureModule.mapper.emitter.GestureCombinationLabelUpdate.connect(self.UpdateGestureCombinationLabel)
+        self.GestureModule.mapper.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.connect(self.UpdateGestureCombinationLabel)
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
