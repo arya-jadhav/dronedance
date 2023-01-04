@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from HandGestureRecognition.hand_gesture_module import *
+from modules.hand_gesture_module import *
 
 
 class Ui_MainWindow(object):

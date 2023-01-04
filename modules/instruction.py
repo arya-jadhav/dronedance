@@ -1,8 +1,6 @@
 import collections
 from collections import Counter
-# import sys
-# sys.path.insert(0,"..")
-# from ..TelloMaster.tello import *
+from TelloMaster import *
 
 class Instruction:
     def __init__(self):

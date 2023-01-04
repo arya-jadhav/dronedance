@@ -12,10 +12,10 @@ hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.5, min_trackin
 mpDraw = mp.solutions.drawing_utils
 
 # Load gesture recogniser model from TensorFlow
-model = load_model('HandGestureRecognition\model\gesture_classifier.hdf5')
+model = load_model('modules\model\gesture_classifier.hdf5')
 
 # Load class names
-f = open('HandGestureRecognition\gesture.names', 'r')
+f = open('modules\model\gesture.names', 'r')
 classNames = f.read().split('\n')
 f.close()
 
