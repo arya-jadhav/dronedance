@@ -2,7 +2,7 @@ import collections
 from collections import Counter
 from PyQt5.QtCore import *
 
-class Instruction(QObject):
+class Instruction:
     combo1 = collections.deque(["thumbs down", "okay"], maxlen=2)
     combo2 = collections.deque(["fist", "stop"], maxlen=2)
 

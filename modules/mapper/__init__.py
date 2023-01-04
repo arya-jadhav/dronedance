@@ -1,1 +1,1 @@
-from instructioncopy import Instruction
+from . instruction_new import Instruction
