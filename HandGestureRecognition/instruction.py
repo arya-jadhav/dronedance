@@ -1,5 +1,8 @@
 import collections
 from collections import Counter
+# import sys
+# sys.path.insert(0,"..")
+# from ..TelloMaster.tello import *
 
 class Instruction:
     def __init__(self):
@@ -52,6 +55,9 @@ class Instruction:
     def two_instruction(self):
         print("two instruction received")
         #drone instruction
+        # start()
+        # takeoff()
+        # land()
 
 
     def three_instruction(self):
