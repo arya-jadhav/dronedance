@@ -396,7 +396,7 @@ class Ui_MainWindow(object):
                                                 self.window.y() + 26, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
                 self.window.notification.setGeometry(rect)
                 self.window.notification.emitter.NotificationDisplayed.connect(self.AllowNewNotification)
-                self.notification_displayed = 1
+                self.notification_displayed += 1
 
     def AllowNewNotification(self, num):
                 self.notification_displayed = num
