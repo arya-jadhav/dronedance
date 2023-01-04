@@ -1,12 +1,13 @@
 import collections
 from collections import Counter
 from PyQt5.QtCore import *
-from modules.TelloMaster import tello
+# from modules.TelloMaster import tello
 
 class Instruction:
     # Emitter signals for GUI
     class Emitter(QObject):
         GestureCapturedAndInstructionToBeExecutedLabelUpdate = pyqtSignal(dict)
+        SendNotification = pyqtSignal(dict)
         def __init__(self):
             super(Instruction.Emitter, self).__init__()
 
@@ -17,10 +18,15 @@ class Instruction:
 
         # Initialize Emitter and dictionary
         self.emitter = Instruction.Emitter()
-        self.gestureSignal = {
+        self.gesture_signal = {
         'do_reset': False,
         'gesture_captured': None,
         'instruction_to_be_executed': None
+        }
+        self.notification_signal = {
+                'display': 'standard',
+                'title': '',
+                'message': ''
         }
 
     def is_gesture(self):
@@ -51,7 +57,7 @@ class Instruction:
                 self.stop_instruction()
             else:
                 print("invalid gesture")
-                self.updateGUI(self.current_gesture, do_reset=True)
+                self.update_gui(self.current_gesture, do_reset=True)
             
             self.current_gesture = ""
 
@@ -61,7 +67,7 @@ class Instruction:
 
     def two_instruction(self):
         print("two instruction received")
-        self.updateGUI(self.current_gesture, drone_instruction='Take off', do_reset=False)
+        self.update_gui(self.current_gesture, drone_instruction='Take off', do_reset=False)
 
     def three_instruction(self):
         print("three instruction received")
@@ -77,7 +83,8 @@ class Instruction:
 
     def thumbs_up_instruction(self):
         print("thumbs up instruction received")
-        self.updateGUI(self.current_gesture, drone_instruction='Do a flip', do_reset=False)
+        self.update_gui(self.current_gesture, drone_instruction='Do a flip', do_reset=False)
+        self.send_notification(display='success', title='Success!', message='Successfully executed \'Do a flip\' instruction.')
 
     def thumbs_down_instruction(self):
         print("thumbs down instruction received")
@@ -85,7 +92,7 @@ class Instruction:
 
     def stop_instruction(self):
         print("stop instruction received")
-        self.updateGUI(self.current_gesture, drone_instruction='Land', do_reset=False)
+        self.update_gui(self.current_gesture, drone_instruction='Land', do_reset=False)
 
     def rock_instruction(self):
         print("rock instruction received")
@@ -95,18 +102,26 @@ class Instruction:
         print("finger gun instruction received")
         #drone instruction
 
-    def updateGUI(self, gesture_name, drone_instruction=None, do_reset=False):
+    def update_gui(self, gesture_name, drone_instruction=None, do_reset=False):
         if do_reset:
-            self.gestureSignal['do_reset'] = do_reset
-            self.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.emit(self.gestureSignal)
+            self.gesture_signal['do_reset'] = do_reset
+            self.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.emit(self.gesture_signal)
 
             # Update dict to intial values
-            self.gestureSignal = {
+            self.gesture_signal = {
             'do_reset': False,
             'gesture_captured': None,
             'instruction_to_be_executed': None
             }
         else:
-            self.gestureSignal['gesture_captured'] = gesture_name
-            self.gestureSignal['instruction_to_be_executed'] = drone_instruction
-            self.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.emit(self.gestureSignal)
+            self.gesture_signal['gesture_captured'] = gesture_name
+            self.gesture_signal['instruction_to_be_executed'] = drone_instruction
+            self.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.emit(self.gesture_signal)
+
+    def send_notification(self, display='standard', title='', message=''):
+        self.notification_signal = {
+                'display': display,
+                'title': title,
+                'message': message
+        }
+        self.emitter.SendNotification.emit(self.notification_signal)

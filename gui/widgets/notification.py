@@ -34,7 +34,12 @@ class Notification(QDialog):
     def setWindowOpacity(self, opacity):
         super().setWindowOpacity(opacity) 
 
-    opacity = pyqtProperty(float, windowOpacity, setWindowOpacity)   
+    opacity = pyqtProperty(float, windowOpacity, setWindowOpacity)  
+
+    class Emitter(QObject):
+        NotificationDisplayed = pyqtSignal(int)
+        def __init__(self):
+            super(Notification.Emitter, self).__init__()
 
     def __init__(self, display='standard', *args, **kwargs):
         super(Notification, self).__init__(*args, **kwargs)
@@ -42,6 +47,8 @@ class Notification(QDialog):
         self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setStyleSheet(Stylesheet)
+
+        self.emitter = Notification.Emitter()
 
         self.initUi(display)
 
@@ -66,7 +73,7 @@ class Notification(QDialog):
         layout = QVBoxLayout(self)
         layout.addWidget(self.widget)
 
-    def setNotify(self, title, message, timeout):
+    def setNotify(self, title, message):
         # Intitalize Message Widget
         self.msg = Message(title, message)
 
@@ -88,6 +95,7 @@ class Notification(QDialog):
         
     def closeNotification(self):
         self.close()
+        self.emitter.NotificationDisplayed.emit(0)
 
     def onClicked(self):
         self.close()
@@ -111,7 +119,7 @@ class Notification(QDialog):
     def startFadeAnimation(self):
         self.startFadeIn()
         QTimer.singleShot(3000, self.startFadeOut)
-        QTimer.singleShot(5000, self.closeNotification)   
+        QTimer.singleShot(5000, self.closeNotification)
 
 Stylesheet = """
 #StandardNotification {
@@ -169,7 +177,7 @@ class _NotificationDemo(QMainWindow):
         
     def showNotification(self):
         self.notification = Notification(display='error')
-        self.notification.setNotify("Error", "Some is certainly going wrong in this application, aaaaaaaaaaaaaaaaaaaahhhhh!", 3000)
+        self.notification.setNotify("Error", "Some is certainly going wrong in this application, aaaaaaaaaaaaaaaaaaaahhhhh!")
         # Calculate the position of window, and display the notification
         r = QRect(self.x() + round(self.width() / 2) - round(self.notification.width() / 2), 
                                         self.y() + 26, self.notification.msg.messageLabel.width() + 30, self.notification.msg.messageLabel.height())
