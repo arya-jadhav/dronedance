@@ -21,7 +21,7 @@ f.close()
 
 # Initialize the webcam for Hand Gesture Recognition Python project
 vid = cv2.VideoCapture(0)
-# instruct = Instruction()
+instruct = Instruction()
 
 def pre_process_landmark(landmark_list):
     # Convert to relative coordinates
@@ -83,10 +83,10 @@ while True:
             className = classNames[classID]
 
             # Obtain and identify instruction
-            # instruct.append_prediction(className)
-            # if instruct.identify_instruction():
-            #     # Carry out instruction
-            #     instruct.carry_instruction()
+            instruct.append_prediction(className)
+            if instruct.identify_instruction():
+                # Carry out instruction
+                instruct.carry_instruction()
 
 
     # show the prediction on the frame

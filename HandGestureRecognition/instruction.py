@@ -20,46 +20,75 @@ class Instruction:
             self.currentGesture = self.most_freq(self.predictionLst)
             self.predictionLst.clear()
             return True
-            
+
+
     def append_prediction(self, element):
         self.predictionLst.append(element)
+
 
     def carry_instruction(self):
         if self.current_gesture():
             # Carry out instruction based on hand gesture     
-            if self.currentGesture == "peace":
-                self.peace_instruction()
+            if self.currentGesture == "two":
+                self.two_instruction()
                 
             elif self.currentGesture == "thumbs up":
                 self.thumbs_up_instruction()
                 
-            elif self.currentGesture == "live long":
-                self.live_long_instruction()
+            elif self.currentGesture == "stop":
+                self.stop_instruction()
+
             else:
                 print("invalid gesture")
             
             self.currentGesture = ""
 
-    def peace_instruction(self):
-        print("peace instruction received")
+
+    def one_instruction(self):
+        print("one instruction received")
         #drone instruction
-    
+
+
+    def two_instruction(self):
+        print("two instruction received")
+        #drone instruction
+
+
+    def three_instruction(self):
+        print("three instruction received")
+        #drone instruction
+
+
+    def okay_instruction(self):
+        print("okay instruction received")
+        #drone instruction
+
+
     def fist_instruction(self):
         print("fist instruction received")
         #drone instruction
+
 
     def thumbs_up_instruction(self):
         print("thumbs up instruction received")
         #drone instruction
 
+
     def thumbs_down_instruction(self):
         print("thumbs down instruction received")
         #drone instruction
 
-    def live_long_instruction(self):
-        print("live long instruction received")
+
+    def stop_instruction(self):
+        print("stop instruction received")
         #drone instruction
 
-    def call_me_instruction(self):
-        print("call me instruction received")
+
+    def rock_instruction(self):
+        print("rock instruction received")
+        #drone instruction
+
+
+    def finger_gun_instruction(self):
+        print("finger gun instruction received")
         #drone instruction
