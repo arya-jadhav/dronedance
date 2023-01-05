@@ -7,7 +7,7 @@ class Instruction:
         # Initialize a double-ended queue to save in predictions
         self.predictionLst = collections.deque(maxlen=25)
         self.instructionGesture = ""
-        #self.confirmationGesture = False
+        self.confirmationGesture = False
 
     def gesture_present(self):
         return (self.instructionGesture != "")
@@ -21,30 +21,36 @@ class Instruction:
         if len(self.predictionLst) == 25:
             gesture = self.most_freq(self.predictionLst)
             self.predictionLst.clear()
+            if gesture != "okay":
+                self.instructionGesture = gesture
             return gesture
-        else:
-            return ""
 
     def identify_instruction(self, gesture):
-        if gesture == "one":
-            print("landing instruction")
-        elif gesture == "two":
-            print("take off instruction")
-        elif gesture == "three":
-            print("three instruction")
-        elif gesture == "fist":
-            print("fist instruction")
-        elif gesture == "thumbs up":
-            print("thumbs up instruction")
-        elif gesture == "thumbs down":
-            print("thumbs down instruction")
-        elif gesture == "stop":
-            print("stop instruction")
-        elif gesture == "rock":
-            print("rock instruction")
-        elif gesture == "finger gun":
-            print("finger gun instruction")
-        print("okay to confirm")
+        if gesture != None:
+            if gesture == "one":
+                print("landing instruction")
+            elif gesture == "two":
+                print("take off instruction")
+            elif gesture == "three":
+                print("three instruction")
+            elif gesture == "fist":
+                print("fist instruction")
+            elif gesture == "thumbs up":
+                print("thumbs up instruction")
+            elif gesture == "thumbs down":
+                print("thumbs down instruction")
+            elif gesture == "stop":
+                print("stop instruction")
+            elif gesture == "rock":
+                print("rock instruction")
+            elif gesture == "finger gun":
+                print("finger gun instruction")
+            elif gesture == "okay":
+                self.confirmationGesture = True
+                return
+            print("okay to confirm")
+
+            self.confirmationGesture = False
 
 
     def set_instruction_gesture(self, gesture):
@@ -56,6 +62,7 @@ class Instruction:
 
 
     def carry_instruction(self):
+        self.confirmationGesture = False
         if self.gesture_present():
             # Carry out instruction based on hand gesture
             if self.instructionGesture == "one":
@@ -80,10 +87,14 @@ class Instruction:
             else:
                 print("invalid gesture")
             self.instructionGesture = ""
+            
         else:
             print("no instruction given")
             #print("okay instruction received")
-            
+
+
+    def check_confirmation(self):
+        return self.confirmationGesture        
 
     def one_instruction(self):
         print("one instruction received")
