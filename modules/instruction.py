@@ -10,7 +10,7 @@ class Instruction:
         self.confirmationGesture = False
 
     def gesture_present(self):
-        return (self.instructionGesture != "")
+        return self.instructionGesture != ""
     
     # Approach 3 from: https://www.geeksforgeeks.org/python-find-most-frequent-element-in-a-list/
     def most_freq(self, lst):
@@ -26,7 +26,7 @@ class Instruction:
             return gesture
 
     def identify_instruction(self, gesture):
-        if gesture != None:
+        if gesture is not None and self.gesture_present():
             if gesture == "one":
                 print("landing instruction")
             elif gesture == "two":
