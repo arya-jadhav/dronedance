@@ -28,25 +28,28 @@ class Instruction:
     def identify_instruction(self, gesture):
         if gesture is not None and self.gesture_present():
             if gesture == "one":
-                print("landing instruction")
-            elif gesture == "two":
                 print("take off instruction")
+            elif gesture == "two":
+                print("fan formation instruction")
             elif gesture == "three":
-                print("three instruction")
+                print("dance formation instruction")
             elif gesture == "fist":
-                print("fist instruction")
+                print("vertical formation instruction")
             elif gesture == "thumbs up":
-                print("thumbs up instruction")
+                print("ice cream formation instruction")
             elif gesture == "thumbs down":
-                print("thumbs down instruction")
+                print("diamond formation instruction")
             elif gesture == "stop":
-                print("stop instruction")
+                print("land instruction")
             elif gesture == "rock":
-                print("rock instruction")
+                print("ice cream instruction")
             elif gesture == "finger gun":
-                print("finger gun instruction")
+                print("dance instruction")
             elif gesture == "okay":
-                self.confirmationGesture = True
+                self.okay_instruction()
+                return
+            else:
+                print("invalid instruction")
                 return
             print("okay to confirm")
 
@@ -62,12 +65,12 @@ class Instruction:
 
 
     def carry_instruction(self):
+        #reset confirmation gesture
         self.confirmationGesture = False
         if self.gesture_present():
             # Carry out instruction based on hand gesture
             if self.instructionGesture == "one":
                 self.one_instruction()   
-
             elif self.instructionGesture == "two":
                 self.two_instruction()
             elif self.instructionGesture == "three":
@@ -90,60 +93,55 @@ class Instruction:
             
         else:
             print("no instruction given")
-            #print("okay instruction received")
 
 
     def check_confirmation(self):
         return self.confirmationGesture        
 
     def one_instruction(self):
-        print("one instruction received")
+        print("take off instruction received")
         #drone instruction
-        # land()
 
 
     def two_instruction(self):
-        print("two instruction received")
+        print("fan formation instruction received")
         #drone instruction
-        # start()
-        # takeoff()
-        
+   
 
     def three_instruction(self):
-        print("three instruction received")
+        print("dance formation instruction received")
         #drone instruction
 
 
     def okay_instruction(self):
-        print("okay instruction received")
-        #drone instruction
+        self.confirmationGesture = True
 
 
     def fist_instruction(self):
-        print("fist instruction received")
+        print("vertical formation instruction received")
         #drone instruction
 
 
     def thumbs_up_instruction(self):
-        print("thumbs up instruction received")
+        print("ice cream formation instruction received")
         #drone instruction
 
 
     def thumbs_down_instruction(self):
-        print("thumbs down instruction received")
+        print("diamond formation instruction received")
         #drone instruction
 
 
     def stop_instruction(self):
-        print("stop instruction received")
+        print("land instruction received")
         #drone instruction
 
 
     def rock_instruction(self):
-        print("rock instruction received")
+        print("ice cream instruction received")
         #drone instruction
 
 
     def finger_gun_instruction(self):
-        print("finger gun instruction received")
+        print("dance instruction received")
         #drone instruction
