@@ -58,29 +58,29 @@ class Instruction:
             self.prediction_list.clear()
             if gesture != "okay":
                 self.instruction_gesture = gesture
-                self.send_notification(display='information', title='Confirmation', message='Show the \'okay\' gesture to start executing the instruction or show a different gesture to change the instruction.')
             return gesture
 
     def identify_instruction(self, gesture):
+        instruction_identified = False
         if gesture is not None and self.gesture_present():
             if gesture == "one":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                instruction_identified = True
             elif gesture == "two":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+               instruction_identified = True
             elif gesture == "three":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                instruction_identified = True
             elif gesture == "fist":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                instruction_identified = True
             elif gesture == "thumbs up":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                instruction_identified = True
             elif gesture == "thumbs down":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                instruction_identified = True
             elif gesture == "stop":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                instruction_identified = True
             elif gesture == "rock":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                instruction_identified = True
             elif gesture == "finger gun":
-                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                instruction_identified = True
             elif gesture == "okay":
                 self.okay_instruction()
                 return
@@ -88,7 +88,12 @@ class Instruction:
                 self.update_gui(self.instruction_gesture, drone_instruction='Invalid Gesture', do_reset=False)
                 self.send_notification(display='error', title='Invalid Gesture', message='Gesture predicted by the gesture classifier is an invalid gesture.')
                 return
-            
+
+            if instruction_identified:
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
+                self.send_notification(display='information', title='Confirmation', message='Show the \'okay\' gesture to start executing the instruction or show a different gesture to change the instruction.')
+                instruction_identified = False
+                
             self.confirmation_gesture = False
 
     def set_instruction_gesture(self, gesture):

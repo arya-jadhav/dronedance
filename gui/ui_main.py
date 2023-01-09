@@ -393,9 +393,9 @@ class Ui_MainWindow(object):
                 self.window.notification = Notification(display=dct['display'])
                 self.window.notification.setNotify(dct['title'], dct['message'])
                 # Calculate the position of window, and display the notification
-                # rect = QtCore.QRect(self.window.x() + round(self.window.width() / 2) - round(self.window.notification.width() / 2), 
-                #                                 self.window.y() + 26, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
-                rect = QtCore.QRect(0, 0, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
+                rect = QtCore.QRect(self.window.x() + round(self.window.width() / 2) - round(self.window.notification.width() / 2), 
+                                                self.window.y() + 26, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
+                # rect = QtCore.QRect(0, 0, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
                 self.window.notification.setGeometry(rect)
                 self.window.notification.emitter.NotificationDisplayed.connect(self.AllowNewNotification)
                 self.notification_displayed += 1

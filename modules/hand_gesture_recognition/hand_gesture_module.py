@@ -24,10 +24,10 @@ class HandGestureModule(QThread):
     mp_draw = mp.solutions.drawing_utils
 
     # Load gesture classifier model from TensorFlow
-    model = load_model('modules\model\gesture_classifier.hdf5')
+    model = load_model('.\modules\model\gesture_classifier.hdf5')
 
     # Load class names
-    f = open('modules\model\gesture.names', 'r')
+    f = open('.\modules\model\gesture.names', 'r')
     class_names = f.read().split('\n')
     f.close()
 
