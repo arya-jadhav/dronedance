@@ -72,6 +72,51 @@ def receive():
       print("Error receiving: " + str(e))
       break
 
+# formation shape function 
+def diamond():
+  send(1, "up 150", 3)
+  send(4, "up 150", 3)
+  send(3, "left 50", 3)
+  send(3, "up 100", 3)
+  send(2, "up 200", 3)
+
+def fan():
+  send(1, "up 150", 3)
+  send(4, "up 150", 3)
+  send(2, "up 2500", 3)
+  send(3, "left 50", 3)
+  send(3, "up 200", 3)
+
+def vertical():
+  send(2, "up 100", 3)
+  send(1, "up 150", 3)
+  send(1, "right 50", 3)
+  send(3, "up 200", 3)
+  send(3, "left 50", 3)
+  send(4, "up 250", 3)
+  send(4, "left 100", 3)
+
+def icecream():
+  send(1, "up 100", 3)
+  send(2, "up 150", 3)
+  send(3, "up 200", 3)
+  send(4, "up 250", 3)
+  send(1, "cw 100", 3)
+  send(2, "cw 150", 3)
+  send(3, "cw 200", 3)
+  send(4, "cw 250", 3)
+
+def dance():
+  send(1, "up 100", 3)
+  send(2, "up 250", 3)
+  send(3, "up 100", 3)
+  send(4, "up 250", 3)
+  #send(1, "cw 100", 3)
+  #send(2, "cw 150", 3)
+  #send(3, "cw 200", 3)
+  #send(4, "cw 250", 3)
+
+
 # Create and start a listening thread that runs in the background
 # This utilizes our receive functions and will continuously monitor for incoming messages
 # receiveThread = threading.Thread(target=receive)

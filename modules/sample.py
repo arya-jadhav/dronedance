@@ -84,7 +84,11 @@ while True:
 
             # Obtain and identify instruction
             instruct.append_prediction(className)
-            if instruct.identify_instruction():
+            gesture = instruct.identify_gesture()
+
+            instruct.identify_instruction(gesture)
+           
+            if instruct.check_confirmation():
                 # Carry out instruction
                 instruct.carry_instruction()
 

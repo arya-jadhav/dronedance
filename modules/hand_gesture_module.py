@@ -75,7 +75,7 @@ class HandGestureModule(QThread):
         occured, the drone instruction has been successfully executed and more...
         '''
         self.ThreadActive = True
-        capture = cv2.VideoCapture(0)
+        capture = cv2.VideoCapture(0) # Use first webcam on your device
         while self.ThreadActive:
             ret, frame = capture.read()
             width, height, c = frame.shape
@@ -111,6 +111,16 @@ class HandGestureModule(QThread):
                         class_id = np.argmax(prediction)
                         class_name = self.class_names[class_id]
 
+                        # Obtain and identify instruction
+                        self.mapper.append_prediction(class_name)
+                        gesture = self.mapper.identify_gesture()
+
+                        self.mapper.identify_instruction(gesture)
+                    
+                        if self.mapper.check_confirmation():
+                            # Carry out instruction
+                            self.mapper.carry_instruction()
+
                 # Show the prediction on the frame
                 # cv2.putText(framergb, className, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
 
@@ -123,11 +133,6 @@ class HandGestureModule(QThread):
                 ConvertToQtFormat = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
                 ScaledFrame = ConvertToQtFormat.scaled(self.scaled_size, Qt.KeepAspectRatio)
                 self.ImageUpdate.emit(ScaledFrame)
-
-                # Obtain and identify instruction
-                self.mapper.append_prediction(class_name)
-                if self.mapper.identify_instruction():
-                    self.mapper.carry_instruction()
 
     def stop(self):
         self.ThreadActive = False
