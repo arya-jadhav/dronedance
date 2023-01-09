@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def __init__(self, window: QtWidgets.QMainWindow):
         object.__init__(self)
         self.window = window
-        self.NOTIFICATION_LIMIT = 1
+        self.NOTIFICATION_LIMIT = 2
         self.notification_displayed = 0
 
     def setupUi(self, MainWindow):
@@ -369,6 +369,7 @@ class Ui_MainWindow(object):
         self.GestureModule.ImageUpdate.connect(self.UpdateVideoCapture)
         self.GestureModule.GesturePredictionUpdate.connect(self.UpdateGesturePrediction)
         self.GestureModule.mapper.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.connect(self.UpdateGestureCapturedAndInstructionToBeExecutedLabel)
+        self.GestureModule.mapper.emitter.PreviousInstructionToDronesLabelUpdate.connect(self.UpdatePreviousInstructionToDrones)
 
         # Notification Widget
         self.GestureModule.mapper.emitter.SendNotification.connect(self.ShowNotification)
@@ -392,8 +393,9 @@ class Ui_MainWindow(object):
                 self.window.notification = Notification(display=dct['display'])
                 self.window.notification.setNotify(dct['title'], dct['message'])
                 # Calculate the position of window, and display the notification
-                rect = QtCore.QRect(self.window.x() + round(self.window.width() / 2) - round(self.window.notification.width() / 2), 
-                                                self.window.y() + 26, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
+                # rect = QtCore.QRect(self.window.x() + round(self.window.width() / 2) - round(self.window.notification.width() / 2), 
+                #                                 self.window.y() + 26, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
+                rect = QtCore.QRect(0, 0, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
                 self.window.notification.setGeometry(rect)
                 self.window.notification.emitter.NotificationDisplayed.connect(self.AllowNewNotification)
                 self.notification_displayed += 1
@@ -414,3 +416,6 @@ class Ui_MainWindow(object):
         else:
                self.label_gestureCaptured_output.setText(dct['gesture_captured'])
                self.label_instructionToBeExecuted_output.setText(dct['instruction_to_be_executed'] if dct['instruction_to_be_executed'] is not None else '')
+
+    def UpdatePreviousInstructionToDrones(self, prev_instruction):
+        self.label_prevInstructionToDrones_output.setText(prev_instruction)

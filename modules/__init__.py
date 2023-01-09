@@ -1,1 +1,1 @@
-from . hand_gesture_module import HandGestureModule
+from . hand_gesture_recognition import HandGestureModule

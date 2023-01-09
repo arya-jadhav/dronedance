@@ -19,6 +19,7 @@ counter = 0
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
+        self.setWindowIcon(QIcon('.\gui\icon\drone.png'))
         self.ui = Ui_MainWindow(self)
         self.ui.setupUi(self)
 
@@ -26,6 +27,7 @@ class MainWindow(QMainWindow):
 class SplashScreen(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
+        self.setWindowIcon(QIcon('.\gui\icon\drone.png'))
         self.ui = Ui_SplashScreen()
         self.ui.setupUi(self)
 

@@ -8,6 +8,7 @@ class Instruction:
     class Emitter(QObject):
         GestureCapturedAndInstructionToBeExecutedLabelUpdate = pyqtSignal(dict)
         SendNotification = pyqtSignal(dict)
+        PreviousInstructionToDronesLabelUpdate = pyqtSignal(str)
         def __init__(self):
             super(Instruction.Emitter, self).__init__()
 
@@ -30,6 +31,19 @@ class Instruction:
                 'message': ''
         }
 
+        # Gesture to Instruction dictionary
+        self.gesture_to_instruction = {
+            'one': 'Take Off',
+            'two': 'Fan Formation',
+            'three' : 'Dance Formation',
+            "fist" : 'Vertical Formation',
+            "thumbs up" : 'Ice Cream Formation',
+            "thumbs down" : 'Diamond Formation',
+            "stop": 'Landing',
+            "rock" : 'Ice Cream Instruction',
+            "finger gun": 'Dance Instruction',
+        }
+
     def gesture_present(self):
         return (self.instruction_gesture != "")
     
@@ -44,34 +58,37 @@ class Instruction:
             self.prediction_list.clear()
             if gesture != "okay":
                 self.instruction_gesture = gesture
+                self.send_notification(display='information', title='Confirmation', message='Show the \'okay\' gesture to start executing the instruction or show a different gesture to change the instruction.')
             return gesture
 
     def identify_instruction(self, gesture):
-        if gesture != None:
+        if gesture is not None and self.gesture_present():
             if gesture == "one":
-                print("landing instruction")
-                self.update_gui(self.instruction_gesture, drone_instruction='Landing', do_reset=False)
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "two":
-                print("take off instruction")
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "three":
-                print("three instruction")
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "fist":
-                print("fist instruction")
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "thumbs up":
-                print("thumbs up instruction")
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "thumbs down":
-                print("thumbs down instruction")
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "stop":
-                print("stop instruction")
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "rock":
-                print("rock instruction")
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "finger gun":
-                print("finger gun instruction")
+                self.update_gui(self.instruction_gesture, drone_instruction=self.gesture_to_instruction[gesture], do_reset=False)
             elif gesture == "okay":
-                self.confirmation_gesture = True
+                self.okay_instruction()
                 return
-            print("okay to confirm")
-
+            else:
+                self.update_gui(self.instruction_gesture, drone_instruction='Invalid Gesture', do_reset=False)
+                self.send_notification(display='error', title='Invalid Gesture', message='Gesture predicted by the gesture classifier is an invalid gesture.')
+                return
+            
             self.confirmation_gesture = False
 
     def set_instruction_gesture(self, gesture):
@@ -81,11 +98,12 @@ class Instruction:
         self.prediction_list.append(element)
 
     def carry_instruction(self):
+        # Reset confirmation gesture
         self.confirmation_gesture = False
         if self.gesture_present():
             # Carry out instruction based on hand gesture
             if self.instruction_gesture == "one":
-                self.one_instruction()   
+                self.one_instruction()
             elif self.instruction_gesture == "two":
                 self.two_instruction()
             elif self.instruction_gesture == "three":
@@ -103,45 +121,72 @@ class Instruction:
             elif self.instruction_gesture == "finger gun":
                 self.finger_gun_instruction()
             else:
-                print("invalid gesture")
+                self.send_notification(display='error', title='Invalid Gesture', message='Unable to carry out instruction due to invalid gesture. Please try again.')
+            
+            # Update display for Prvious Drone Instruction in GUI
+            self.update_previous_drone_instruction(prev_instruction=self.gesture_to_instruction[self.instruction_gesture])
+            # Reset instruction gesture
             self.instruction_gesture = ""
-        else:
-            print("no instruction given")
-    
+
     def check_confirmation(self):
-        return self.confirmation_gesture
+        return self.confirmation_gesture        
 
     def one_instruction(self):
-        print("one instruction received")
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='success', title='Success!', message='Successfully executed \'Landing\' instruction.')
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("take off instruction received")
+        # Drone take off instruction
 
     def two_instruction(self):
-        print("two instruction received")
-
+        self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("fan formation instruction received")
+        # Drone fan formation instruction
+   
     def three_instruction(self):
-        print("three instruction received")
+        self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("dance formation instruction received")
+        # Drone dance formation instruction
 
     def okay_instruction(self):
-        print("okay instruction received")
+        self.confirmation_gesture = True
 
     def fist_instruction(self):
-        print("fist instruction received")
+        self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("vertical formation instruction received")
+        # Drone vertical formation instruction
 
     def thumbs_up_instruction(self):
-        print("thumbs up instruction received")
+        self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("ice cream formation instruction received")
+        # Drone ice cream formation instruction
 
     def thumbs_down_instruction(self):
-        print("thumbs down instruction received")
+        self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("diamond formation instruction received")
+        # Drone diamond formation instruction
 
     def stop_instruction(self):
-        print("stop instruction received")
+        self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("landing instruction received")
+        # Drone land instruction
 
     def rock_instruction(self):
-        print("rock instruction received")
+        self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("ice cream instruction received")
+        # Drone ice cream instruction
 
     def finger_gun_instruction(self):
-        print("finger gun instruction received")
+        self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
+        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        print("dance instruction received")
+        # Drone dance instruction
 
     def update_gui(self, gesture_name, drone_instruction=None, do_reset=False):
         if do_reset:
@@ -158,6 +203,9 @@ class Instruction:
             self.gesture_signal['gesture_captured'] = gesture_name
             self.gesture_signal['instruction_to_be_executed'] = drone_instruction
             self.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.emit(self.gesture_signal)
+        
+    def update_previous_drone_instruction(self, prev_instruction):
+        self.emitter.PreviousInstructionToDronesLabelUpdate.emit(prev_instruction)
 
     def send_notification(self, display='standard', title='', message=''):
         self.notification_signal = {

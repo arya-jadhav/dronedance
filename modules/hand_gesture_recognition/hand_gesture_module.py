@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import tensorflow as tf
-from . mapper import Instruction
+from ..mapper import Instruction
 
 from tensorflow.python.keras.models import load_model
 
