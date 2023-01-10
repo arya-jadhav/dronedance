@@ -12,7 +12,7 @@ from tensorflow.python.keras.models import load_model
 
 class HandGestureModule(QThread):
     # Size of Video Capture in GUI
-    scaled_size = QSize(490, 350)
+    scaled_size = QSize(490, 355)
 
     # Signals for label update in GUI
     ImageUpdate = pyqtSignal(QImage)
