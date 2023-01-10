@@ -23,6 +23,10 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow(self)
         self.ui.setupUi(self)
 
+    def closeEvent(self, a0: QCloseEvent) -> None:
+        # CLOSE SOCKET HERE
+        a0.accept() # let the window close
+
 # SPLASH SCREEN
 class SplashScreen(QMainWindow):
     def __init__(self):
@@ -97,4 +101,3 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = SplashScreen()
     sys.exit(app.exec_()) 
-
