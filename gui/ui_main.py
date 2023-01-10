@@ -14,11 +14,12 @@ from gui.widgets.notification import Notification
 
 
 class Ui_MainWindow(object):
-    def __init__(self, window: QtWidgets.QMainWindow):
+    def __init__(self, window: QtWidgets.QMainWindow, GestureModule: HandGestureModule):
         object.__init__(self)
         self.window = window
         self.NOTIFICATION_LIMIT = 2
         self.notification_displayed = 0
+        self.GestureModule = GestureModule
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -417,7 +418,6 @@ class Ui_MainWindow(object):
         self.button_proceed.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_capture))
 
         # Hand Gesture Module
-        self.GestureModule = HandGestureModule()
         self.GestureModule.start()
         self.GestureModule.ImageUpdate.connect(self.UpdateVideoCapture)
         self.GestureModule.GesturePredictionUpdate.connect(self.UpdateGesturePrediction)

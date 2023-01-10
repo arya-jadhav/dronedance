@@ -12,19 +12,25 @@ from gui.ui_splash_screen import Ui_SplashScreen
 # > MAIN WINDOW UI
 from gui.ui_main import Ui_MainWindow
 
+from modules.hand_gesture_recognition import HandGestureModule
+
 # Global Variables
 counter = 0
+GestureModule = HandGestureModule()
 
 # CONNECTED UI
 class MainWindow(QMainWindow):
+    global GestureModule
+
     def __init__(self):
         QMainWindow.__init__(self)
         self.setWindowIcon(QIcon('.\gui\icon\drone.png'))
-        self.ui = Ui_MainWindow(self)
+        self.ui = Ui_MainWindow(window=self, GestureModule=GestureModule)
         self.ui.setupUi(self)
 
     def closeEvent(self, a0: QCloseEvent) -> None:
         # CLOSE SOCKET HERE
+        GestureModule.stop() # Stop Gesture Module thread
         a0.accept() # let the window close
 
 # SPLASH SCREEN
