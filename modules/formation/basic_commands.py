@@ -11,7 +11,7 @@ import time
 tello1_address = ('192.168.1.104', 8889)
 tello2_address = ('192.168.1.103', 8889)
 tello3_address = ('192.168.1.102', 8889)
-tello4_address = ('192.168.1.101', 8889)
+tello4_address = ('192.168.1.105', 8889)
 
 # IP and port of local computer (host, port)
 # empty host=connections accepted on all IPv4 interfaces
@@ -125,21 +125,52 @@ def dance():
 
 
 # Put Tello into command mode
+def initialize_drones():
 
-send(1, "command", 0)
-send(2, "command", 0)
-send(3, "command", 3)
+  for i in range(4):
+    send(i+1, "command", 2)
 
-# send(1, "battery?", 3)
-# send(2, "battery?", 3)
-# Send the takeoff command
-send(1, "takeoff", 0)
-send(2, "takeoff", 0)
-send(3, "takeoff", 3)
+def takeoff_drones():
+  """
+  Function for all drones to take off together
+  """
+  for i in range(4):
+    send(i+1, "takeoff",  0 if i<3 else 3)
 
-send(1, "land", 3)
-send(2, "land", 3)
-send(3, "land", 0)
+def land_drones():
+  """
+  Function to land drones one by one can amend if required
+  """
+ 
+  for i in range(4):
+    send(i+1, "land",  3 if i<3 else 0)
+
+
+
+# send(1, "command", 2)
+# send(2, "command", 2)
+# send(3, "command", 2)
+# send(4, "command", 2)
+initialize_drones()
+
+# send(1, "takeoff", 0)
+# send(2, "takeoff", 0)
+# send(3, "takeoff", 0)
+# send(4, "takeoff", 3)
+takeoff_drones()
+
+
+# singular flip
+# send(4, "takeoff", 3)
+# send(4, "flip b", 4)
+# send(4, "", 3)
+
+
+# send(1, "land", 3)
+# send(2, "land", 3)
+# send(3, "land", 3)
+# send(4, "land", 0)
+land_drones()
 
 # Print message
 print("Mission completed successfully!")
