@@ -12,7 +12,7 @@ from gui.ui_splash_screen import Ui_SplashScreen
 # > MAIN WINDOW UI
 from gui.ui_main import Ui_MainWindow
 
-from modules.hand_gesture_recognition import HandGestureModule
+from modules import HandGestureModule
 
 # Global Variables
 counter = 0
