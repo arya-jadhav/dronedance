@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import mediapipe as mp
 import tensorflow as tf
-from instruction import Instruction
+from sample_instruction import Instruction
 from tensorflow.python.keras.models import load_model
 
 
