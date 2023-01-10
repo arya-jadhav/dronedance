@@ -30,6 +30,7 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, a0: QCloseEvent) -> None:
         # CLOSE SOCKET HERE
+        GestureModule.mapper.close_socket() # Close the sockets
         GestureModule.stop() # Stop Gesture Module thread
         a0.accept() # let the window close
 

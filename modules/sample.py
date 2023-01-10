@@ -103,6 +103,7 @@ while True:
 
     # Press 'q' to stop the program
     if cv2.waitKey(1) == ord('q'):
+        instruct.close_socket()
         break
 
 # release the webcam and destroy all active windows

@@ -1,6 +1,7 @@
 import collections
 from collections import Counter
 from PyQt5.QtCore import *
+from modules.mapper.basic_commands import DroneSwarm
 # from modules.TelloMaster import tello
 
 class Instruction:
@@ -17,6 +18,8 @@ class Instruction:
         self.prediction_list = collections.deque(maxlen=25)
         self.instruction_gesture = ""
         self.confirmation_gesture = False
+        self.drone_swarm = DroneSwarm()
+        self.drone_swarm.initialize_drones()
 
         # Initialize Emitter and dictionary
         self.emitter = Instruction.Emitter()
@@ -141,6 +144,7 @@ class Instruction:
         self.send_notification(display='information', title='Executing drone instructions...', message='')
         print("take off instruction received")
         # Drone take off instruction
+        self.drone_swarm.takeoff_drones()
 
     def two_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
@@ -180,6 +184,7 @@ class Instruction:
         self.send_notification(display='information', title='Executing drone instructions...', message='')
         print("landing instruction received")
         # Drone land instruction
+        self.drone_swarm.land_drones()
 
     def rock_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
@@ -219,3 +224,6 @@ class Instruction:
                 'message': message
         }
         self.emitter.SendNotification.emit(self.notification_signal)
+
+    def close_socket(self):
+        self.drone_swarm.end()

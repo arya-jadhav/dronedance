@@ -1,6 +1,7 @@
 import collections
 from collections import Counter
 from TelloMaster.tello import *
+from formation.basic_commands import DroneSwarm
 
 class Instruction:
     def __init__(self):
@@ -8,6 +9,8 @@ class Instruction:
         self.prediction_list = collections.deque(maxlen=25)
         self.instruction_gesture = ""
         self.confirmation_gesture = False
+        self.drone_swarm = DroneSwarm()
+        self.drone_swarm.initialize_drones()
 
         # Gesture to Instruction dictionary
         self.gesture_to_instruction = {
@@ -16,7 +19,7 @@ class Instruction:
             'three' : 'Dance Formation',
             "fist" : 'Vertical Formation',
             "thumbs up" : 'Ice Cream Formation',
-            "thumbs down" : 'Diamond Formation',
+            "thumbs down" : 'Diamond Formation Formation',
             "stop": 'Landing',
             "rock" : 'Ice Cream Instruction',
             "finger gun": 'Dance Instruction',
@@ -77,6 +80,7 @@ class Instruction:
     def carry_instruction(self):
         # Reset confirmation gesture
         self.confirmation_gesture = False
+        print("executing carry instruction")
         if self.gesture_present():
             # Carry out instruction based on hand gesture
             if self.instruction_gesture == "one":
@@ -110,6 +114,7 @@ class Instruction:
     def one_instruction(self):
         print("take off instruction received")
         # Drone take off instruction
+        self.drone_swarm.takeoff_drones()
 
     def two_instruction(self):
         print("fan formation instruction received")
@@ -134,14 +139,22 @@ class Instruction:
         print("diamond formation instruction received")
         # Drone diamond formation instruction
 
+
     def stop_instruction(self):
         print("landing instruction received")
         # Drone land instruction
+        self.drone_swarm.land_drones()
+        
 
     def rock_instruction(self):
         print("ice cream instruction received")
         # Drone ice cream instruction
 
+
     def finger_gun_instruction(self):
         print("dance instruction received")
         # Drone dance instruction
+
+    
+    def close_socket(self):
+        self.drone_swarm.end()
