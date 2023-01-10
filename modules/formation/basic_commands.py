@@ -15,39 +15,45 @@ tello4_address = ('192.168.1.105', 8889)
 
 # IP and port of local computer (host, port)
 # empty host=connections accepted on all IPv4 interfaces
-local1_address = ('', 9010)
-local2_address = ('', 9011)
-# local3_address = ('', 9012)
+local1_address = ('', 9000)
+local2_address = ('', 9001)
+local3_address = ('', 9010)
+local4_address = ('', 9011)
 
 # Create a socket object (address family: IPv4, protocol: UDP)
 sock1 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# sock3 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock3 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock4 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Bind to the local address and port by associating socket with a specific port number
 sock1.bind(local1_address)
 sock2.bind(local2_address)
-# sock3.bind(local3_address)
+sock3.bind(local3_address)
+sock4.bind(local4_address)
 
 # Send the message to Tello and allow for a delay in seconds
 def send(id, message, delay):
   # Try to send the message otherwise print the exception
   try:
-    if id==1:
-      sock1.sendto(message.encode(), tello1_address)
-    elif id==2:
-      # pass
-      sock2.sendto(message.encode(), tello2_address)
-    elif id==3:
-      sock1.sendto(message.encode(), tello3_address)
-    elif id==4:
-      sock2.sendto(message.encode(), tello4_address)
+    sendPerDrones(id, message)
     print("Sending message: " + message)
   except Exception as e:
     print("Error sending: " + str(e))
 
   # Delay for a user-defined period of time
   time.sleep(delay)
+
+def sendPerDrones(id, message):
+ match id:
+  case 1:
+    sock1.sendto(message.encode(), tello1_address)
+  case 2:
+    sock2.sendto(message.encode(), tello1_address)
+  case 3:
+    sock3.sendto(message.encode(), tello1_address)
+  case 4:
+    sock4.sendto(message.encode(), tello1_address)
 
 # Receive the message from Tello
 def receive():
@@ -56,21 +62,30 @@ def receive():
   while True:
     # Try to receive the message otherwise print the exception
     try:
-      response1, ip_address1 = sock1.recvfrom(128) # 128 bytes is max size of data
-      response2, ip_address2 = sock2.recvfrom(128)
-    #   response3, ip_address = sock3.recvfrom(128)
+      response1, ip_address = sock1.recvfrom(128)
+      response2, ip_address = sock2.recvfrom(128)
+      response3, ip_address = sock3.recvfrom(128)
+      response4, ip_address = sock4.recvfrom(128)
       print("Received message: from Tello EDU #1: " + response1.decode(encoding='utf-8'))
       print("Received message: from Tello EDU #2: " + response2.decode(encoding='utf-8'))
-    #   print("Received message: from Tello EDU #3: " + response3.decode(encoding='utf-8'))
-
+      print("Received message: from Tello EDU #3: " + response3.decode(encoding='utf-8'))
+      print("Received message: from Tello EDU #4: " + response4.decode(encoding='utf-8'))
     except Exception as e:
       # If there's an error close the socket and break out of the loop
-      print("closing due to exception")
       sock1.close()
       sock2.close()
-    #   sock3.close()
+      sock3.close()
+      sock4.close()
+
       print("Error receiving: " + str(e))
       break
+
+
+# Create and start a listening thread that runs in the background
+# This utilizes our receive functions and will continuously monitor for incoming messages
+receiveThread = threading.Thread(target=receive)
+receiveThread.daemon = True
+receiveThread.start()
 
 # formation shape function 
 def diamond():
@@ -153,20 +168,18 @@ def land_drones():
 # send(4, "command", 2)
 initialize_drones()
 
-# send(1, "takeoff", 0)
+# send(1, "takeoff", 2)
 # send(2, "takeoff", 0)
 # send(3, "takeoff", 0)
 # send(4, "takeoff", 3)
 takeoff_drones()
 
+send(1,"forward 50", 3)
+send(2, "forward 50", 4)
+# send(3, "left 20", 5)
+# send(4, "down 50", 6)
 
-# singular flip
-# send(4, "takeoff", 3)
-# send(4, "flip b", 4)
-# send(4, "", 3)
-
-
-# send(1, "land", 3)
+# send(1, "land", 0)
 # send(2, "land", 3)
 # send(3, "land", 3)
 # send(4, "land", 0)
@@ -180,5 +193,7 @@ print("Mission completed successfully!")
 # Close the socket
 sock1.close()
 sock2.close()
-# sock3.close()
+sock3.close()
+sock4.close()
+
 
