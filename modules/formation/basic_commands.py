@@ -113,12 +113,12 @@ class DroneSwarm:
     self.send(4, "cw 250", 10)
 
   def dance(self):
-    self.send(2, "up 100", 3)
-    self.send(4, "up 100", 5)
-    self.send(1, "up 100", 7)
-    self.send(3, "up 100", 8)
-    self.send(2, "down 100", 9)
-    self.send(4, "down 100", 10)
+    self.send(2, "up 80", 3)
+    self.send(4, "up 80", 5)
+    self.send(1, "up 80", 7)
+    self.send(3, "up 80", 8)
+    self.send(2, "down 80", 9)
+    self.send(4, "down 80", 10)
     #send(1, "cw 100", 3)
     #send(2, "cw 150", 3)
     #send(3, "cw 200", 3)
