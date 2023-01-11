@@ -26,9 +26,9 @@ class DroneSwarm:
 
     self.bind_sockets()
 
-    self.receiveThread = threading.Thread(target=self.receive)
-    self.receiveThread.daemon = True
-    self.receiveThread.start()
+    # self.receiveThread = threading.Thread(target=self.receive)
+    # self.receiveThread.daemon = True
+    # self.receiveThread.start()
 
   def bind_sockets(self):
     self.sock1.bind(self.local1_address)
@@ -83,48 +83,51 @@ class DroneSwarm:
         break
   
   def diamond(self):
-    self.send(1, "up 150", 3)
-    self.send(4, "up 150", 3)
-    self.send(3, "left 50", 3)
-    self.send(3, "up 100", 3)
-    self.send(2, "up 200", 3)
+    self.send(3, "up 80", 3)
+    self.send(3, "left 50", 4)
+    self.send(2, "down 20", 5)
 
-  def fan(self):
-    self.send(1, "up 150", 3)
-    self.end(4, "up 150", 3)
-    self.send(2, "up 2500", 3)
-    self.send(3, "left 50", 3)
-    self.send(3, "up 200", 3)
+  def triangle(self):
+    self.send(3, "up 100", 2)
+    self.send(2, "up 50", 2)
+    self.send(4, "up 50", 3)
 
   def vertical(self):
-    self.send(2, "up 100", 3)
-    self.send(1, "up 150", 3)
-    self.send(1, "right 50", 3)
-    self.send(3, "up 200", 3)
-    self.send(3, "left 50", 3)
-    self.send(4, "up 250", 3)
-    self.send(4, "left 100", 3)
+    self.send(2, "up 50", 3)
+    self.send(1, "up 70", 5)
+    self.send(1, "right 50", 6)
+    self.send(3, "up 100", 7)
+    self.send(3, "left 50", 8)
+    self.send(4, "up 120", 9)
+    self.send(4, "left 50", 10)
 
   def icecream(self):
-    self.send(1, "up 100", 3)
-    self.send(2, "up 150", 3)
-    self.send(3, "up 200", 3)
-    self.send(4, "up 250", 3)
-    self.send(1, "cw 100", 3)
-    self.send(2, "cw 150", 3)
-    self.send(3, "cw 200", 3)
-    self.send(4, "cw 250", 3)
+    self.send(2, "up 20", 3)
+    self.send(3, "up 50", 5)
+    self.send(4, "up 80", 6)
+    self.send(1, "cw 100", 7)
+    self.send(2, "cw 150", 8)
+    self.send(3, "cw 200", 9)
+    self.send(4, "cw 250", 10)
 
   def dance(self):
-    self.send(1, "up 100", 3)
-    self.send(2, "up 250", 3)
-    self.send(3, "up 100", 3)
-    self.send(4, "up 250", 3)
+    self.send(1, "up 50", 3)
+    self.send(3, "up 50", 4)
+    self.send(2, "up 100", 5)
+    self.send(4, "up 100", 7)
+    # self.send(1, "down 50", 8)
+    # self.send(3, "down 50", 9)
+    # self.send(2, "down 100", 10)
+    # self.send(4, "down 100", 11)
     #send(1, "cw 100", 3)
     #send(2, "cw 150", 3)
     #send(3, "cw 200", 3)
     #send(4, "cw 250", 3)
   
+  def test(self):
+    self.send(2, "flip f", 3)
+    self.send(3, "forward 50", 5)
+
   def initialize_drones(self):
     for i in range(4):
       self.send(i+1, "command", 2)
@@ -134,14 +137,14 @@ class DroneSwarm:
     Function for all drones to take off together
     """
     for i in range(4):
-      self.send(i+1, "takeoff",  0 if i<3 else 3)
+      self.send(i+1, "takeoff",  2)
 
   def land_drones(self):
     """
     Function to land drones one by one (can amend if required differently)
     """
     for i in range(4):
-      self.send(i+1, "land",  3 if i<3 else 0)
+      self.send(i+1, "land",  20)
       
   def end(self):
     # Close the sockets

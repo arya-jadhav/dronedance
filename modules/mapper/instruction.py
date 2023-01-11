@@ -15,7 +15,7 @@ class Instruction:
 
     def __init__(self):
         # Initialize a double-ended queue to save in predictions
-        self.prediction_list = collections.deque(maxlen=25)
+        self.prediction_list = collections.deque(maxlen=20)
         self.instruction_gesture = ""
         self.confirmation_gesture = False
         self.drone_swarm = DroneSwarm()
@@ -37,7 +37,7 @@ class Instruction:
         # Gesture to Instruction dictionary
         self.gesture_to_instruction = {
             'one': 'Take Off',
-            'two': 'Fan Formation',
+            'two': 'Triangle Formation',
             'three' : 'Dance Formation',
             "fist" : 'Vertical Formation',
             "thumbs up" : 'Ice Cream Formation',
@@ -56,7 +56,7 @@ class Instruction:
         return occur_count.most_common(1)[0][0] # the element with the most frequency
 
     def identify_gesture(self):
-        if len(self.prediction_list) == 25:
+        if len(self.prediction_list) == 20:
             gesture = self.most_freq(self.prediction_list)
             self.prediction_list.clear()
             if gesture != "okay":
@@ -141,20 +141,21 @@ class Instruction:
 
     def one_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
         print("take off instruction received")
         # Drone take off instruction
-        self.drone_swarm.takeoff_drones()
+        # self.drone_swarm.takeoff_drones()
 
     def two_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
-        print("fan formation instruction received")
-        # Drone fan formation instruction
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
+        print("triangle formation instruction received")
+        # Drone triangle formation instruction
+        # self.drone_swarm.triangle()
    
     def three_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
         print("dance formation instruction received")
         # Drone dance formation instruction
 
@@ -163,40 +164,42 @@ class Instruction:
 
     def fist_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
         print("vertical formation instruction received")
         # Drone vertical formation instruction
 
     def thumbs_up_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
         print("ice cream formation instruction received")
         # Drone ice cream formation instruction
 
     def thumbs_down_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
         print("diamond formation instruction received")
         # Drone diamond formation instruction
 
     def stop_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
         print("landing instruction received")
         # Drone land instruction
-        self.drone_swarm.land_drones()
+        # self.drone_swarm.land_drones()
 
     def rock_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
         print("ice cream instruction received")
         # Drone ice cream instruction
+        # self.drone_swarm.initialize_drones()
 
     def finger_gun_instruction(self):
         self.update_gui(self.instruction_gesture, drone_instruction=None, do_reset=True)
-        self.send_notification(display='information', title='Executing drone instructions...', message='')
+        self.send_notification(display='success', title='Success!', message='Executing {}.'.format(self.gesture_to_instruction[self.instruction_gesture]))
         print("dance instruction received")
         # Drone dance instruction
+        # self.drone_swarm.dance()
 
     def update_gui(self, gesture_name, drone_instruction=None, do_reset=False):
         if do_reset:
