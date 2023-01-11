@@ -124,9 +124,6 @@ class DroneSwarm:
     #send(3, "cw 200", 3)
     #send(4, "cw 250", 3)
   
-  def test(self):
-    self.send(2, "flip f", 3)
-    self.send(3, "forward 50", 5)
 
   def initialize_drones(self):
     for i in range(4):
