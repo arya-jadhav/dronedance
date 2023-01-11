@@ -87,12 +87,10 @@ class DroneSwarm:
     self.send(3, "left 50", 4)
     self.send(2, "down 20", 5)
 
-  def fan(self):
-    self.send(1, "up 70", 3)
-    self.end(4, "up 70", 5)
-    self.send(2, "up 120", 7)
-    self.send(3, "left 50", 8)
-    self.send(3, "up 100", 9)
+  def triangle(self):
+    self.send(2, "up 100", 2)
+    self.send(1, "up 50", 4)
+    self.send(3, "up 50", 4)
 
   def vertical(self):
     self.send(2, "up 50", 3)
