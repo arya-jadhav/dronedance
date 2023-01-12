@@ -9,18 +9,9 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from modules import HandGestureModule
-from gui.widgets.notification import Notification
 
 
 class Ui_MainWindow(object):
-    def __init__(self, window: QtWidgets.QMainWindow, GestureModule: HandGestureModule):
-        object.__init__(self)
-        self.window = window
-        self.NOTIFICATION_LIMIT = 2
-        self.notification_displayed = 0
-        self.GestureModule = GestureModule
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(900, 600)
@@ -414,19 +405,6 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.stackedWidget, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
-        # Button Clicked
-        self.button_proceed.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.page_capture))
-
-        # Hand Gesture Module
-        self.GestureModule.start()
-        self.GestureModule.ImageUpdate.connect(self.UpdateVideoCapture)
-        self.GestureModule.GesturePredictionUpdate.connect(self.UpdateGesturePrediction)
-        self.GestureModule.mapper.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.connect(self.UpdateGestureCapturedAndInstructionToBeExecutedLabel)
-        self.GestureModule.mapper.emitter.PreviousInstructionToDronesLabelUpdate.connect(self.UpdatePreviousInstructionToDrones)
-
-        # Notification Widget
-        self.GestureModule.mapper.emitter.SendNotification.connect(self.ShowNotification)
-
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -442,35 +420,3 @@ class Ui_MainWindow(object):
         self.label_gestureCaptured_title.setText(_translate("MainWindow", "Gesture Captured"))
         self.label_instructionToBeExecuted_title.setText(_translate("MainWindow", "Instruction to be executed"))
         self.label_prevInstructionToDrones_title.setText(_translate("MainWindow", "Previous Instruction to Drone Swarm"))
-
-    def ShowNotification(self, dct):
-        if self.notification_displayed < self.NOTIFICATION_LIMIT:
-                self.window.notification = Notification(display=dct['display'])
-                self.window.notification.setNotify(dct['title'], dct['message'])
-                # Calculate the position of window, and display the notification
-                rect = QtCore.QRect(self.window.x() + round(self.window.width() / 2) - round(self.window.notification.width() / 2), 
-                                                self.window.y() + 26, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
-                # rect = QtCore.QRect(0, 0, self.window.notification.msg.messageLabel.width() + 30, self.window.notification.msg.messageLabel.height())
-                self.window.notification.setGeometry(rect)
-                self.window.notification.emitter.NotificationDisplayed.connect(self.AllowNewNotification)
-                self.notification_displayed += 1
-
-    def AllowNewNotification(self, num):
-                self.notification_displayed = num
-
-    def UpdateVideoCapture(self, frame):
-        self.label_vidCapture.setPixmap(QtGui.QPixmap.fromImage(frame))
-
-    def UpdateGesturePrediction(self, prediction):
-        self.label_handGesture_prediction.setText(prediction)
-
-    def UpdateGestureCapturedAndInstructionToBeExecutedLabel(self, dct):
-        if dct['do_reset']:
-               self.label_gestureCaptured_output.setText('')
-               self.label_instructionToBeExecuted_output.setText('')
-        else:
-               self.label_gestureCaptured_output.setText(dct['gesture_captured'])
-               self.label_instructionToBeExecuted_output.setText(dct['instruction_to_be_executed'] if dct['instruction_to_be_executed'] is not None else '')
-
-    def UpdatePreviousInstructionToDrones(self, prev_instruction):
-        self.label_prevInstructionToDrones_output.setText(prev_instruction)

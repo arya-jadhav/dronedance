@@ -1,1 +1,1 @@
-from .instruction import Instruction
+from .mapper_module import Instruction

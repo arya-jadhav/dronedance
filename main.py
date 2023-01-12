@@ -13,6 +13,7 @@ from gui.ui_splash_screen import Ui_SplashScreen
 from gui.ui_main import Ui_MainWindow
 
 from modules import HandGestureModule
+from gui.widgets.notification import Notification
 
 # Global Variables
 counter = 0
@@ -25,8 +26,56 @@ class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setWindowIcon(QIcon('.\gui\icon\drone.png'))
-        self.ui = Ui_MainWindow(window=self, GestureModule=GestureModule)
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        self.NOTIFICATION_LIMIT = 2
+        self.notification_displayed = 0
+
+        # CONTINUE BUTTON CLICK EVENT
+        self.ui.button_proceed.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_capture))
+
+        # Hand Gesture Module
+        GestureModule.start()
+        GestureModule.ImageUpdate.connect(self.UpdateVideoCapture)
+        GestureModule.GesturePredictionUpdate.connect(self.UpdateGesturePrediction)
+        GestureModule.mapper.emitter.GestureCapturedAndInstructionToBeExecutedLabelUpdate.connect(self.UpdateGestureCapturedAndInstructionToBeExecutedLabel)
+        GestureModule.mapper.emitter.PreviousInstructionToDronesLabelUpdate.connect(self.UpdatePreviousInstructionToDrones)
+
+        # Notification Widget
+        GestureModule.mapper.emitter.SendNotification.connect(self.ShowNotification)
+
+    def ShowNotification(self, dct):
+        if self.notification_displayed < self.NOTIFICATION_LIMIT:
+                self.notification = Notification(display=dct['display'])
+                self.notification.setNotify(dct['title'], dct['message'])
+                # Calculate the position of window, and display the notification
+                rect = QRect(self.x() + round(self.width() / 2) - round(self.notification.width() / 2), 
+                                                self.y() + 26, self.notification.msg.messageLabel.width() + 30, self.notification.msg.messageLabel.height())
+                # rect = QtCore.QRect(0, 0, self.notification.msg.messageLabel.width() + 30, self.notification.msg.messageLabel.height())
+                self.notification.setGeometry(rect)
+                self.notification.emitter.NotificationDisplayed.connect(self.AllowNewNotification)
+                self.notification_displayed += 1
+
+    def AllowNewNotification(self, num):
+                self.notification_displayed = num
+
+    def UpdateVideoCapture(self, frame):
+        self.ui.label_vidCapture.setPixmap(QPixmap.fromImage(frame))
+
+    def UpdateGesturePrediction(self, prediction):
+        self.ui.label_handGesture_prediction.setText(prediction)
+
+    def UpdateGestureCapturedAndInstructionToBeExecutedLabel(self, dct):
+        if dct['do_reset']:
+               self.ui.label_gestureCaptured_output.setText('')
+               self.ui.label_instructionToBeExecuted_output.setText('')
+        else:
+               self.ui.label_gestureCaptured_output.setText(dct['gesture_captured'])
+               self.ui.label_instructionToBeExecuted_output.setText(dct['instruction_to_be_executed'] if dct['instruction_to_be_executed'] is not None else '')
+
+    def UpdatePreviousInstructionToDrones(self, prev_instruction):
+        self.ui.label_prevInstructionToDrones_output.setText(prev_instruction)
 
     def closeEvent(self, a0: QCloseEvent) -> None:
         # CLOSE SOCKET HERE

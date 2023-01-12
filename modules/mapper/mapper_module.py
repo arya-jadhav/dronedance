@@ -1,8 +1,7 @@
 import collections
 from collections import Counter
 from PyQt5.QtCore import *
-from modules.mapper.basic_commands import DroneSwarm
-# from modules.TelloMaster import tello
+from ..formation import DroneSwarm
 
 class Instruction:
     # Emitter signals for GUI

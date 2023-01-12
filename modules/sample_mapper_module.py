@@ -1,7 +1,6 @@
 import collections
 from collections import Counter
-from TelloMaster.tello import *
-from formation.basic_commands import DroneSwarm
+from formation.test.basic_commands import DroneSwarm
 
 class Instruction:
     def __init__(self):
