@@ -6,15 +6,15 @@ class Instruction:
     def __init__(self):
         # Initialize a double-ended queue to save in predictions
         self.prediction_list = collections.deque(maxlen=25)
-        self.instruction_gesture = ""
-        self.confirmation_gesture = False
-        self.drone_swarm = DroneSwarm()
-        self.drone_swarm.initialize_drones()
+        self.instruction_gesture = "" # Current gesture captured
+        self.confirmation_gesture = False # Check for confirmation gesture 
+        self.drone_swarm = DroneSwarm() # Drone swarm instructions
+        self.drone_swarm.initialize_drones() # Connect to drones and have them ready to accept instructions
 
         # Gesture to Instruction dictionary
         self.gesture_to_instruction = {
             'one': 'Take Off',
-            'two': 'Fan Formation',
+            'two': 'Triangle Formation',
             'three' : 'Dance Formation',
             "fist" : 'Vertical Formation',
             "thumbs up" : 'Ice Cream Formation',
@@ -45,7 +45,7 @@ class Instruction:
             if gesture == "one":
                 print("take off instruction")
             elif gesture == "two":
-                print("fan formation instruction")
+                print("triangle formation instruction")
             elif gesture == "three":
                 print("dance formation instruction")
             elif gesture == "fist":
@@ -116,8 +116,8 @@ class Instruction:
         self.drone_swarm.takeoff_drones()
 
     def two_instruction(self):
-        print("fan formation instruction received")
-        # Drone fan formation instruction
+        print("triangle formation instruction received")
+        # Drone triangle formation instruction
    
     def three_instruction(self):
         print("dance formation instruction received")

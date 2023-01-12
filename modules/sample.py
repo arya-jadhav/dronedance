@@ -1,3 +1,7 @@
+"""
+A sample video capture used for testing the hand gesture recognition
+and the instruction mapper. Press 'Q' to exit and close the program
+"""
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -82,13 +86,14 @@ while True:
             classID = np.argmax(prediction)
             className = classNames[classID]
 
-            # Obtain and identify instruction
+            # Obtain and identify gesture
             instruct.append_prediction(className)
             gesture = instruct.identify_gesture()
 
+            # Identify instruction
             instruct.identify_instruction(gesture)
            
-            if instruct.check_confirmation():
+            if instruct.check_confirmation(): # Check for confirmation gesture
                 # Carry out instruction
                 instruct.carry_instruction()
 
@@ -103,7 +108,7 @@ while True:
 
     # Press 'q' to stop the program
     if cv2.waitKey(1) == ord('q'):
-        instruct.close_socket()
+        instruct.close_socket() #close the sockets
         break
 
 # release the webcam and destroy all active windows
