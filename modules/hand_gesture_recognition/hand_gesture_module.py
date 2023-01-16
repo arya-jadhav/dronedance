@@ -36,8 +36,7 @@ class HandGestureModule(QThread):
 
     def pre_process_landmark(self, landmarks):
         '''
-        Function:
-        Pre-process information from MediaPipe Hands as input for gesture classifier
+        Function: Pre-process information from MediaPipe Hands as input for gesture classifier
         '''
         # Convert to relative coordinates
         base_x, base_y = 0, 0
@@ -134,6 +133,7 @@ class HandGestureModule(QThread):
                 ScaledFrame = ConvertToQtFormat.scaled(self.scaled_size, Qt.KeepAspectRatio)
                 self.ImageUpdate.emit(ScaledFrame)
 
+    # Used to stop the thread for this module
     def stop(self):
         self.ThreadActive = False
         self.quit()

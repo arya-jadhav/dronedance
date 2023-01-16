@@ -3,6 +3,8 @@ from collections import Counter
 from PyQt5.QtCore import *
 from ..formation import DroneSwarm
 
+# NOTE: All code that allows the drones to execute drone instructions are COMMENTED OUT
+
 class Instruction:
     # Emitter signals for GUI
     class Emitter(QObject):
@@ -210,7 +212,9 @@ class Instruction:
         # Drone dance instruction
         # self.drone_swarm.dance()
 
-    # Update GUI to show the capture gesture and corresponding instruction
+##### GUI SIGNAL EMITTERS #####
+
+    # Update GUI to show the capture gesture and corresponding instruction by emitting a signal to main.py
     def update_gui(self, gesture_name, drone_instruction=None, do_reset=False):
         if do_reset:
             self.gesture_signal['do_reset'] = do_reset
@@ -230,7 +234,7 @@ class Instruction:
     def update_previous_drone_instruction(self, prev_instruction):
         self.emitter.PreviousInstructionToDronesLabelUpdate.emit(prev_instruction)
 
-    # Sending notification to GUI
+    # Sending notification to GUI by emitting a signal to main.py
     def send_notification(self, display='standard', title='', message=''):
         self.notification_signal = {
                 'display': display,
@@ -239,6 +243,7 @@ class Instruction:
         }
         self.emitter.SendNotification.emit(self.notification_signal)
 
-    # Close the opened sockets
+##### Close socket of drone (From the Drone Formation module) #####
+
     def close_socket(self):
         self.drone_swarm.end()

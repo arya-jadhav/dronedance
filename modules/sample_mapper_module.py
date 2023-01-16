@@ -1,6 +1,6 @@
 import collections
 from collections import Counter
-from formation.test.basic_commands import DroneSwarm
+from formation.test.test_basic_commands import DroneSwarm
 
 class Instruction:
     def __init__(self):
